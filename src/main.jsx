@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { CardApp } from './assets/CardApp'
+import { CartApp } from './assets/CartApp'
 
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <CardApp />
+    <CartApp />
   </React.StrictMode>,
 )

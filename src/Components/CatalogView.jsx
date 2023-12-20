@@ -3,7 +3,7 @@ import { getProducts } from "../Services/ProductService";
 import { ProductCardView } from "./ProductCardView";
 
 
-export const CatalogView = () => {
+export const CatalogView = ({ handler }) => {
 
     const [products, setProducts] = useState([]);
 
@@ -21,9 +21,13 @@ export const CatalogView = () => {
                 {products.map(item => (
                     <div className="col-4 my-2"
                         key={item.id}>
-                        <ProductCardView name={item.name}
+                        <ProductCardView
+                            handler={handler}
+                            id={item.id}
+                            name={item.name}
                             description={item.description}
                             price={item.price}
+
                         />
                     </div>
                 ))}
