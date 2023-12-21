@@ -1,22 +1,20 @@
-import { useState } from "react";
+import { useReducer, useEffect } from "react";
 import { CartView } from "../Components/CartView";
 import { CatalogView } from "../Components/CatalogView";
+import { ItemsReducer } from "../Reducer/ItemsReducer";
+import { products } from "../Data/products";
+import { addProductCart, deleteProductCart, updateQuantityProductCart } from "../Reducer/itemsActions";
 
-const inititalCartItems = [
-    // {
-    //     product: {
-    //     },
-    //     quantity: 0,
-    //     total: 0
-    // }
-];
+const inititalCartItems = JSON.parse(sessionStorage.getItem('cart')) || [];
 
 
 export const CartApp = () => {
 
+    const [cartItems, dispatch] = useReducer(ItemsReducer, inititalCartItems);
 
-
-    const [cartItems, setCartItems] = useState(inititalCartItems);
+    useEffect(() => {
+        sessionStorage.setItem('cart', JSON.stringify(cartItems));
+    }, [cartItems])
 
     const handlerAddProductCart = (product) => {
 
@@ -24,30 +22,33 @@ export const CartApp = () => {
 
         if (hasItem) {
 
-            setCartItems([
-                ...cartItems.filter((i) => i.product.id !== product.id),
+            dispatch(
                 {
-                    product,
-                    quantity: hasItem.quantity + 1,
+                    type: updateQuantityProductCart,
+                    payload: product,
                 }
-            ])
+            );
+
         } else {
-            setCartItems([
-                ...cartItems,
+
+            dispatch(
                 {
-                    product,
-                    quantity: 1,
-                    total: product.price * 1
+                    type: addProductCart,
+                    payload: product,
                 }
-            ]);
+            );
+
         }
 
     }
 
     const handlerDeleteProduct = (id) => {
-        setCartItems([
-            ...cartItems.filter((i) => i.product.id !== id),
-        ])
+        dispatch(
+            {
+                type: deleteProductCart,
+                payload: id,
+            }
+        );
     }
 
     return (
